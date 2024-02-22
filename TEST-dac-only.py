@@ -46,28 +46,24 @@ allFlipsArr=[]
 for d in dfArr:
     allFlipsArr.append([1 if i == 'F' else 0 for i in d['F/N'].values])
 
-# logTimes = dataFrame['Time'].values
-# formatedTimes=[datetime.datetime.strptime(i, '%Y-%m-%d-%H-%M-%S-%f').strftime('%H:%M:%S.%f') for i in logTimes]
-# tickSpace = int(len(formatedTimes)/14)
-# plotTicks = [formatedTimes[i] for i in range(0,len(formatedTimes),tickSpace)]
-# plotTicksInt = [i for i in range(0,len(formatedTimes),tickSpace)]
-
 num=len(allFlipsArr)
 fig, ax = plt.subplots(num)
-fig.suptitle('Observed bit-flips, DACs', fontsize=16)
+fig.suptitle('Observed bit-flips, DACs, F=flipped, N=not flipped', fontsize=16)
 
 for i in range(num):
-    ax[i].plot(allFlipsArr[i])
+    ax[i].plot(allFlipsArr[i],linewidth=3.0)
     ax[i].set_ylabel(namesArr[i], rotation=0, fontsize=10, labelpad=20, va='center')
     ax[i].set_ylim(0,1)
-    ax[i].set_yticklabels([])
+    ax[i].set_yticks([0, 1], ['N', 'F'])
     # if i != num-1:
-    #     ax[i].set_xticks([])
-    ax[i].set_xticks([])
+    #     ax[i].set_yticklabels([])
+    if i != num-1:
+        ax[i].set_xticks([])
+    if i == num-1:
+        ax[i].set_xlabel('# of reads', rotation=0, fontsize=10, labelpad=10, va='center')
     ax[i].spines['top'].set_visible(False)
     ax[i].spines['right'].set_visible(False)
     ax[i].spines['bottom'].set_visible(False)
-    #ax[i].tick_params(axis='x', labelrotation=45, labelsize=10)
-    #ax[i].set_xticks(plotTicksInt, plotTicks)
 
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=0.9)
 plt.savefig('alldacs.png')
